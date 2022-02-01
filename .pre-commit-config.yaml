@@ -1,0 +1,26 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+    -   id: check-ast
+    -   id: check-added-large-files
+    -   id: check-json
+    -   id: detect-private-key
+
+-   repo: https://github.com/PyCQA/flake8
+    rev: 4.0.1
+    hooks:
+    -   id: flake8
+
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: Run pytest
+        entry: pytest
+        language: system
+        always_run: true
+        verbose: true
+        pass_filenames: false
