@@ -18,6 +18,11 @@ def test_my_range_one_parameter():
     assert str(e.value) == "my_range() missing 1 required positional argument: 'end'"
 
 
+def test_my_range_too_many_params():
+    with pytest.raises(TypeError):
+        my_range(1, 10, 3, 15)
+
+
 def test_my_range_give_string():
     with pytest.raises(TypeError):
         my_range('1', 10)
