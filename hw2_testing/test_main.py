@@ -32,6 +32,10 @@ def test_my_range_pos_pos():
     assert my_range(1, 5) == [1, 2, 3, 4]
 
 
+def test_my_range_neg_neg():
+    assert my_range(-10, -4) == [-10, -9, -8, -7, -6, -5]
+
+
 def test_my_range_zero():
     assert my_range(0, 0) == [0]
 
