@@ -42,3 +42,7 @@ def test_my_range_zero():
 
 def test_my_range_with_step():
     assert my_range(1, 9, 4) == [1, 5]
+
+
+def test_my_range_float():
+    assert my_range(1.5, 10.5, 4.5) == [1.5, 6]
