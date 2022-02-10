@@ -26,3 +26,8 @@ def my_cache(should_save=True):
                 raise TypeError('should_save parameter must be boolean')
         return wrapper
     return my_cache_dec
+
+
+@my_cache()
+def my_sum(a, b):
+    return f'The sum is {a + b}'
