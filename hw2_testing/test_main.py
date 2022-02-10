@@ -1,6 +1,6 @@
 import pytest
 
-from hw2_testing.main import my_cache, my_range, my_sum, cache_list
+from hw2_testing.main import my_cache, my_range, my_sum, cache_list, no_params
 
 
 def test_my_range_no_parameters():
@@ -68,3 +68,26 @@ def test_decorated_my_sum_true():
 def test_decorated_my_sum_false():
     decorated_func = my_cache(should_save=False)(my_sum)
     assert decorated_func(11, 7) == "The sum is 18"
+
+
+def test_decorated_my_sum_not_boolean():
+    with pytest.raises(TypeError) as e:
+        decorated_func = my_cache(should_save='1')(my_sum)
+        decorated_func(11, 7)
+
+    assert str(e.value) == "should_save parameter must be boolean"
+
+
+def test_decorated_my_sum_typo():
+    with pytest.raises(TypeError) as e:
+        decorated_func = my_cache(shoud_save='True')(my_sum)
+        decorated_func(11, 7)
+
+    assert str(e.value) == "my_cache() got an unexpected keyword argument 'shoud_save'"
+
+
+def test_decorated_no_params():
+    decorated_func = my_cache()(no_params)
+    assert decorated_func() == "Something is written\n" \
+                               "Cashed the following: ['Something is written']"
+    cache_list.clear()
