@@ -1,6 +1,6 @@
 import pytest
 
-from hw2_testing.main import my_cache, my_range, my_sum
+from hw2_testing.main import my_cache, my_range, my_sum, cache_list
 
 
 def test_my_range_no_parameters():
@@ -56,3 +56,15 @@ def test_my_range_float():
 def test_decorated_my_sum_default():
     decorated_func = my_cache()(my_sum)
     assert decorated_func(10, 5) == "The sum is 15\nCashed the following: ['The sum is 15']"
+    cache_list.clear()
+
+
+def test_decorated_my_sum_true():
+    decorated_func = my_cache(should_save=True)(my_sum)
+    assert decorated_func(11, 7) == "The sum is 18\nCashed the following: ['The sum is 18']"
+    cache_list.clear()
+
+
+def test_decorated_my_sum_false():
+    decorated_func = my_cache(should_save=False)(my_sum)
+    assert decorated_func(11, 7) == "The sum is 18"
