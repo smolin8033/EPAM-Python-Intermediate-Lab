@@ -31,3 +31,8 @@ def my_cache(should_save=True):
 @my_cache()
 def my_sum(a, b):
     return f'The sum is {a + b}'
+
+
+@my_cache()
+def no_params():
+    return 'Something is written'
