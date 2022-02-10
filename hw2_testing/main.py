@@ -1,3 +1,7 @@
+from functools import wraps
+
+cache_list = []
+
 
 def my_range(start, end, step=1):
     arr = [start]
@@ -5,3 +9,20 @@ def my_range(start, end, step=1):
         start += step
         arr.append(start)
     return arr
+
+
+def my_cache(should_save=True):
+    def my_cache_dec(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if should_save is True:
+                cache_list.append(result)
+                print(f'Cashed the following: {cache_list}')
+                return result
+            elif should_save is False:
+                return result
+            else:
+                raise TypeError('should_save parameter must be boolean')
+        return wrapper
+    return my_cache_dec
