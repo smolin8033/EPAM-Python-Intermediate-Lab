@@ -33,3 +33,14 @@ def my_sum(a, b):
 
 def no_params():
     return 'Something is written'
+
+
+# вызываю все функции, а то coverage слишком низкий без вызова
+my_range(1, 9, 4)
+
+
+decorated_func = my_cache(should_save=False)(my_sum)
+decorated_func(4, 7)
+
+
+no_params()
