@@ -1,6 +1,6 @@
 import pytest
 
-from hw2_testing.main import my_range
+from hw2_testing.main import my_cache, my_range, my_sum
 
 
 def test_my_range_no_parameters():
@@ -51,3 +51,8 @@ def test_my_range_with_step():
 
 def test_my_range_float():
     assert my_range(1.5, 10.5, 4.5) == [1.5, 6]
+
+
+def test_decorated_my_sum_default():
+    decorated_func = my_cache()(my_sum)
+    assert decorated_func(10, 5) == "The sum is 15\nCashed the following: ['The sum is 15']"
