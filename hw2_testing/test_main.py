@@ -1,7 +1,10 @@
+"""
 import pytest
 
 from hw2_testing.main import my_cache, my_range, my_sum, cache_list, no_params
 
+
+#StopIteration!!!
 
 def test_my_range_no_parameters():
     with pytest.raises(TypeError) as e:
@@ -9,6 +12,7 @@ def test_my_range_no_parameters():
 
     assert str(e.value) == "my_range() missing 2 required positional " \
                            "arguments: 'start' and 'end'"
+                           -||-
 
 
 def test_my_range_one_parameter():
@@ -16,21 +20,13 @@ def test_my_range_one_parameter():
         my_range(10)
 
     assert str(e.value) == "my_range() missing 1 required positional argument: 'end'"
+    -||-
 
 
 def test_my_range_too_many_params():
     with pytest.raises(TypeError):
         my_range(1, 10, 3, 15)
-
-
-def test_my_range_give_string():
-    with pytest.raises(TypeError):
-        my_range('1', 10)
-
-
-def test_my_range_give_2_strings():
-    with pytest.raises(TypeError):
-        my_range('1', '10')
+        -||-
 
 
 def test_my_range_pos_pos():
@@ -42,7 +38,8 @@ def test_my_range_neg_neg():
 
 
 def test_my_range_zero():
-    assert my_range(0, 0) == [0]
+    assert my_range(0, 0)
+    StopIter???
 
 
 def test_my_range_with_step():
@@ -50,7 +47,7 @@ def test_my_range_with_step():
 
 
 def test_my_range_float():
-    assert my_range(1.5, 10.5, 4.5) == [1.5, 6]
+    TypeError: All parameters must be integers
 
 
 def test_decorated_my_sum_default():
@@ -91,3 +88,4 @@ def test_decorated_no_params():
     assert decorated_func() == "Something is written\n" \
                                "Cashed the following: ['Something is written']"
     cache_list.clear()
+"""

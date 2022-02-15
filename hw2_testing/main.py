@@ -1,14 +1,27 @@
 from functools import wraps
+from typing import Generator
 
 cache_list = []
 
 
-def my_range(start, end, step=1):
-    arr = [start]
-    while start + step < end:
-        start += step
-        arr.append(start)
-    return arr
+def my_range(start: int, end: int, step=1) -> Generator[int, None, None]:
+    """
+    :param start: start of range
+    :type start: int
+    :param end: end of range
+    :type end: int
+    :param step: step of range
+    :type step: int
+    :return generator object
+    """
+    if type(start) is int and \
+            type(end) is int and \
+            type(step) is int:
+        while start < end:
+            yield start
+            start += step
+    else:
+        raise TypeError('All parameters must be integers')
 
 
 def my_cache(should_save=True):
@@ -33,14 +46,3 @@ def my_sum(a, b):
 
 def no_params():
     return 'Something is written'
-
-
-# вызываю все функции, а то coverage слишком низкий без вызова
-my_range(1, 9, 4)
-
-
-decorated_func = my_cache(should_save=False)(my_sum)
-decorated_func(4, 7)
-
-
-no_params()
