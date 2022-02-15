@@ -1,10 +1,7 @@
-"""
 import pytest
 
-from hw2_testing.main import my_cache, my_range, my_sum, cache_list, no_params
+from hw2_testing.main import my_range
 
-
-#StopIteration!!!
 
 def test_my_range_no_parameters():
     with pytest.raises(TypeError) as e:
@@ -12,7 +9,6 @@ def test_my_range_no_parameters():
 
     assert str(e.value) == "my_range() missing 2 required positional " \
                            "arguments: 'start' and 'end'"
-                           -||-
 
 
 def test_my_range_one_parameter():
@@ -20,35 +16,60 @@ def test_my_range_one_parameter():
         my_range(10)
 
     assert str(e.value) == "my_range() missing 1 required positional argument: 'end'"
-    -||-
 
 
 def test_my_range_too_many_params():
     with pytest.raises(TypeError):
         my_range(1, 10, 3, 15)
-        -||-
+
+
+def test_my_range_initial():
+    gen = my_range(1, 4)
+    assert next(gen) == 1
 
 
 def test_my_range_pos_pos():
-    assert my_range(1, 5) == [1, 2, 3, 4]
+    gen = my_range(1, 3)
+    next(gen)
+    assert next(gen) == 2
+
+
+def test_my_range_stop_iter():
+    gen = my_range(1, 2)
+    next(gen)
+    with pytest.raises(StopIteration):
+        next(gen)
 
 
 def test_my_range_neg_neg():
-    assert my_range(-10, -4) == [-10, -9, -8, -7, -6, -5]
-
-
-def test_my_range_zero():
-    assert my_range(0, 0)
-    StopIter???
+    gen = my_range(-10, -8)
+    next(gen)
+    assert next(gen) == -9
 
 
 def test_my_range_with_step():
-    assert my_range(1, 9, 4) == [1, 5]
+    gen = my_range(1, 9, 4)
+    next(gen)
+    assert next(gen) == 5
+
+
+def test_my_range_end_not_included():
+    gen = my_range(1, 9, 4)
+    next(gen)
+    next(gen)
+    with pytest.raises(StopIteration):
+        next(gen)
 
 
 def test_my_range_float():
-    TypeError: All parameters must be integers
+    gen = my_range(1.5, 9, 5)
+    with pytest.raises(TypeError) as e:
+        next(gen)
 
+    assert str(e.value) == 'All parameters must be integers'
+
+
+"""
 
 def test_decorated_my_sum_default():
     decorated_func = my_cache()(my_sum)

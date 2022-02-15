@@ -1,4 +1,4 @@
-from functools import wraps
+# from functools import wraps
 from typing import Generator
 
 cache_list = []
@@ -24,6 +24,7 @@ def my_range(start: int, end: int, step=1) -> Generator[int, None, None]:
         raise TypeError('All parameters must be integers')
 
 
+'''
 def my_cache(should_save=True):
     def my_cache_dec(func):
         @wraps(func)
@@ -46,3 +47,4 @@ def my_sum(a, b):
 
 def no_params():
     return 'Something is written'
+'''
