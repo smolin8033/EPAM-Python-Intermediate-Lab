@@ -1,7 +1,5 @@
-# from functools import wraps
+from functools import wraps
 from typing import Generator
-
-cache_list = []
 
 
 def my_range(start: int, end: int, step=1) -> Generator[int, None, None]:
@@ -24,20 +22,27 @@ def my_range(start: int, end: int, step=1) -> Generator[int, None, None]:
         raise TypeError('All parameters must be integers')
 
 
-'''
 def my_cache(should_save=True):
     def my_cache_dec(func):
+        cache_list = []
+
         @wraps(func)
         def wrapper(*args, **kwargs):
-            result = func(*args, **kwargs)
-            if should_save is True:
-                cache_list.append(result)
-                return f'{result}\nCashed the following: {cache_list}'
-            elif should_save is False:
-                return result
+            if len(cache_list) != 0:
+                return f'Cached: {cache_list[0]}'
             else:
-                raise TypeError('should_save parameter must be boolean')
+                result = func(*args, **kwargs)
+                if should_save is True:
+                    cache_list.append(result)
+                    return result
+                elif should_save is False:
+                    return result
+                else:
+                    raise TypeError('should_save parameter '
+                                    'must be boolean')
+
         return wrapper
+
     return my_cache_dec
 
 
@@ -47,4 +52,3 @@ def my_sum(a, b):
 
 def no_params():
     return 'Something is written'
-'''
