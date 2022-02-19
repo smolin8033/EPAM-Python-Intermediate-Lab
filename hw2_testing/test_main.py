@@ -87,13 +87,13 @@ def test_decorated_my_sum_first_call():
 def test_decorated_my_sum_second_call():
     decorated_func = my_cache()(my_sum)
     decorated_func(10, 5)
-    assert decorated_func(10, 5) == 'Cached: The sum is 15'
+    assert decorated_func(10, 5) == 'The sum is 15'
 
 
 def test_decorated_my_sum_true():
     decorated_func = my_cache(should_save=True)(my_sum)
     decorated_func(11, 7)
-    assert decorated_func(11, 7) == 'Cached: The sum is 18'
+    assert decorated_func(11, 7) == 'The sum is 18'
 
 
 def test_decorated_my_sum_false():
@@ -113,4 +113,4 @@ def test_decorated_my_sum_not_boolean():
 def test_decorated_no_params():
     decorated_func = my_cache()(no_params)
     decorated_func()
-    assert decorated_func() == 'Cached: Something is written'
+    assert decorated_func() == 'Something is written'

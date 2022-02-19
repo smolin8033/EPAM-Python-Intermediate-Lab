@@ -24,16 +24,16 @@ def my_range(start: int, end: int, step=1) -> Generator[int, None, None]:
 
 def my_cache(should_save=True):
     def my_cache_dec(func):
-        cache_list = []
+        cache_dict = {}
 
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if len(cache_list) != 0:
-                return f'Cached: {cache_list[0]}'
+            if args in cache_dict:
+                return cache_dict[args]
             else:
                 result = func(*args, **kwargs)
                 if should_save is True:
-                    cache_list.append(result)
+                    cache_dict[args] = result
                     return result
                 elif should_save is False:
                     return result
