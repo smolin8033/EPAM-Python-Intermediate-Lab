@@ -69,6 +69,16 @@ def test_my_range_float():
     assert str(e.value) == 'All parameters must be integers'
 
 
+def test_compare_with_builtin():
+    range_arr = []
+    my_range_arr = []
+    for i in range(1, 9, 4):
+        range_arr.append(i)
+    for i in my_range(1, 9, 4):
+        my_range_arr.append(i)
+    assert range_arr == my_range_arr
+
+
 def test_decorated_my_sum_first_call():
     decorated_func = my_cache()(my_sum)
     assert decorated_func(10, 5) == 'The sum is 15'
