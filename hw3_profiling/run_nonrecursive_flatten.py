@@ -1,6 +1,9 @@
 
 from memory_profiler import profile
 
+my_arr = [4, 5, 6, [4, 7], 7, 4, [2, 8], 7, [4, 7, [3, 8, 5]], 9, 7, 8,
+          [4, 9, [3, 9, [4, 8, [3, 6, 7, 3], 3], 5], 4], 9]
+
 
 def nonrecursive_flatten(arr):
     nested = True
@@ -19,10 +22,8 @@ def nonrecursive_flatten(arr):
 
 @profile
 def run_nonrecursive_flatten():
-    array = []
     for i in range(1000):
-        array.append([1, [1, 1, [486, 453, 342, [3653, 3543, 76757, [2, 5, 3, 4]]]]])
-        result = nonrecursive_flatten(array)
+        result = nonrecursive_flatten(arr=my_arr)
     return result
 
 

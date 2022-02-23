@@ -1,8 +1,7 @@
 
 from memory_profiler import profile
 
-
-array = []
+my_arr = [5, 9, 3, 6, 0, 1, 7, 2, 8, 4]
 
 
 def bubble_sorting(arr):
@@ -16,10 +15,8 @@ def bubble_sorting(arr):
 
 @profile
 def run_bubble_sorting():
-    array = []
     for i in range(-350, 0):
-        array.append(abs(i))
-        result = bubble_sorting(array)
+        result = bubble_sorting(arr=my_arr)
     return result
 
 

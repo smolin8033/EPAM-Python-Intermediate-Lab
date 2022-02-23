@@ -1,6 +1,8 @@
 
 from memory_profiler import profile
 
+my_arr = [5, 9, 3, 6, 0, 1, 7, 2, 8, 4]
+
 
 def quick_sorting(arr):
     if len(arr) < 2:
@@ -14,10 +16,8 @@ def quick_sorting(arr):
 
 @profile
 def run_quick_sorting():
-    array = []
     for i in range(-350, 0):
-        array.append(abs(i))
-        result = quick_sorting(array)
+        result = quick_sorting(arr=my_arr)
     return result
 
 

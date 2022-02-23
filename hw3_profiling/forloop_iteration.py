@@ -1,6 +1,8 @@
 
 from memory_profiler import profile
 
+my_arr = [22, 55, 77, 34, 65, 23, 76, 45, 323, 76]
+
 
 def forloop_iteration(arr):
     new_list = []
@@ -11,10 +13,8 @@ def forloop_iteration(arr):
 
 @profile
 def run_forloop_iteration():
-    array = []
     for i in range(5000, 20000, 100):
-        array.append(i)
-        result = forloop_iteration(array)
+        result = forloop_iteration(arr=my_arr)
     return result
 
 

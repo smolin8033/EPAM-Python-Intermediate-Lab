@@ -1,6 +1,7 @@
 
 from memory_profiler import profile
 
+my_arr = [5, 9, 3, 6, 0, 1, 7, 2, 8, 4]
 
 array = []
 
@@ -12,9 +13,7 @@ def builtin_sorting(arr):
 
 @profile
 def run_builtin_sorting():
-    array = []
     for i in range(-350, 0):
-        array.append(abs(i))
         result = builtin_sorting(array)
     return result
 

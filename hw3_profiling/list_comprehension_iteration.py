@@ -1,6 +1,8 @@
 
 from memory_profiler import profile
 
+my_arr = [22, 55, 77, 34, 65, 23, 76, 45, 323, 76]
+
 
 def list_comprehension_iteration(arr):
     new_list = [i ** 2 for i in arr]
@@ -9,10 +11,8 @@ def list_comprehension_iteration(arr):
 
 @profile
 def run_list_comprehension_iteration():
-    array = []
     for i in range(5000, 20000, 100):
-        array.append(i)
-        result = list_comprehension_iteration(array)
+        result = list_comprehension_iteration(arr=my_arr)
     return result
 
 
