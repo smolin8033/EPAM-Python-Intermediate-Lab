@@ -1,5 +1,6 @@
 import argparse
 # import os
+import requests
 import sys
 
 
@@ -25,8 +26,16 @@ except FileNotFoundError:
     sys.exit()
 
 
-print('Argument values:')
-print(args.file)
-print(args.dir)
-print(args.threads)
-print(args.size)
+def parse_image(url_file, counter):
+    with open(url_file) as file:
+        for url in file:
+            response = requests.get(url)
+            if response.status_code == 200:
+                print(response.status_code)
+            else:
+                print(response.status_code)
+                counter += 1
+    print(counter)
+
+
+print(parse_image(args.file, errors_counter))
