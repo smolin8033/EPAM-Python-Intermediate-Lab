@@ -1,5 +1,6 @@
 import argparse
 # import os
+import sys
 
 
 errors_counter = 0
@@ -14,6 +15,14 @@ parser.add_argument('--size', type=str, default='100x100')
 
 
 args = parser.parse_args()
+
+
+try:
+    with open(args.file) as f:
+        print('Found file')
+except FileNotFoundError:
+    print('File with urls not found')
+    sys.exit()
 
 
 print('Argument values:')
