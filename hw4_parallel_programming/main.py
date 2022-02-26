@@ -30,22 +30,26 @@ except FileNotFoundError:
     sys.exit()
 
 
-def pillow_handle_and_save(content, size, url_index):
-    global errors_counter
+def save_to_dir(image, url_index):
     file_path = str(args.dir)
     Path(file_path).mkdir(parents=True, exist_ok=True)
+    file_name = f'{url_index}.jpeg'
+    new_file_path = os.path.join(file_path, file_name)
+    image.save(new_file_path, 'JPEG')
+
+
+def pillow_handle_and_save(content, size, url_index):
+    global errors_counter
     try:
         with Image.open(BytesIO(content)) as im:
             im.thumbnail(size)
             im.show()
-            file_name = f'{url_index}.jpeg'
-            new_file_path = os.path.join(file_path, file_name)
-            im.save(new_file_path, 'JPEG')
+            save_to_dir(im, url_index)
     except UnidentifiedImageError:
         print(f'The image on the url №{url_index} was not identified')
         errors_counter += 1
     except IOError:
-        print('Cannot create thumbnail for', new_file_path)
+        print('Cannot create thumbnail for', str(args.dir))
         errors_counter += 1
 
 
