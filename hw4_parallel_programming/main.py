@@ -1,9 +1,10 @@
 import argparse
-# import os
+import os
 import requests
 import sys
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
+from pathlib import Path
 
 
 errors_counter = 0
@@ -29,25 +30,38 @@ except FileNotFoundError:
     sys.exit()
 
 
-def pillow_handle(content, size, counter):
+def pillow_handle_and_save(content, size, url_index):
+    global errors_counter
+    file_path = str(args.dir)
+    Path(file_path).mkdir(parents=True, exist_ok=True)
     try:
         with Image.open(BytesIO(content)) as im:
             im.thumbnail(size)
             im.show()
+            file_name = f'{url_index}.jpeg'
+            new_file_path = os.path.join(file_path, file_name)
+            im.save(new_file_path, 'JPEG')
     except UnidentifiedImageError:
-        counter += 1
+        print(f'The image on the url №{url_index} was not identified')
+        errors_counter += 1
+    except IOError:
+        print('Cannot create thumbnail for', new_file_path)
+        errors_counter += 1
 
 
-def parse_image(url_file, counter):
+def parse_image(url_file):
+    global errors_counter
     with open(url_file) as file:
-        for url in file:
+        file_list = file.readlines()
+        for url in file_list:
+            url_index = file_list.index(url)
             response = requests.get(url)
             if response.status_code == 200:
-                pillow_handle(response.content, image_size, errors_counter)
+                pillow_handle_and_save(response.content, image_size, url_index)
             else:
-                print(response.status_code)
-                counter += 1
-    print(counter)
+                print(url_index, '-', response)
+                errors_counter += 1
 
 
-print(parse_image(args.file, errors_counter))
+print(parse_image(args.file))
+print(f'The number of errors: {errors_counter}')
