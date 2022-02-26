@@ -2,6 +2,8 @@ import argparse
 # import os
 import requests
 import sys
+from io import BytesIO
+from PIL import Image, UnidentifiedImageError
 
 
 errors_counter = 0
@@ -16,6 +18,7 @@ parser.add_argument('--size', type=str, default='100x100')
 
 
 args = parser.parse_args()
+image_size = tuple([int(i) for i in args.size.split('x')])
 
 
 try:
@@ -26,12 +29,21 @@ except FileNotFoundError:
     sys.exit()
 
 
+def pillow_handle(content, size, counter):
+    try:
+        with Image.open(BytesIO(content)) as im:
+            im.thumbnail(size)
+            im.show()
+    except UnidentifiedImageError:
+        counter += 1
+
+
 def parse_image(url_file, counter):
     with open(url_file) as file:
         for url in file:
             response = requests.get(url)
             if response.status_code == 200:
-                print(response.status_code)
+                pillow_handle(response.content, image_size, errors_counter)
             else:
                 print(response.status_code)
                 counter += 1
