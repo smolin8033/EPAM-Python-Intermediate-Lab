@@ -1,4 +1,5 @@
 import argparse
+import concurrent.futures
 import os
 import requests
 import sys
@@ -68,12 +69,19 @@ def parse_image(url_file):
                 errors_counter += 1
 
 
-start_time = time.perf_counter()
-print(parse_image(args.file))
-print(f'The number of errors: {errors_counter}')
-print(f'The number of downloaded files:'
-      f' {len([f for f in os.listdir(args.dir)])}')
-print(f'The size of the folder with downloaded files:'
-      f' {sum([os.path.getsize(os.path.join(str(args.dir), f)) for f in os.listdir(args.dir)])}')
-duration = time.perf_counter() - start_time
-print(f'Finished in {duration} seconds')
+def do_parse_image():
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.threads) as executor:
+        executor.map(parse_image(args.file))
+
+
+if __name__ == '__main__':
+    start_time = time.perf_counter()
+    # print(parse_image(args.file))
+    do_parse_image()
+    print(f'The number of errors: {errors_counter}')
+    print(f'The number of downloaded files:'
+          f' {len([f for f in os.listdir(args.dir)])}')
+    print(f'The size of the folder with downloaded files:'
+          f' {sum([os.path.getsize(os.path.join(str(args.dir), f)) for f in os.listdir(args.dir)])}')
+    duration = time.perf_counter() - start_time
+    print(f'Finished in {duration} seconds')
