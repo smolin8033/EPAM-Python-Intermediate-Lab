@@ -9,6 +9,7 @@ from PIL import Image, UnidentifiedImageError
 from pathlib import Path
 
 
+index_counter = -1
 errors_counter = 0
 
 parser = argparse.ArgumentParser(description='Give entry parameters')
@@ -27,57 +28,56 @@ image_size = tuple([int(i) for i in args.size.split('x')])
 try:
     with open(args.file) as f:
         print('Found file')
+        urls = open(args.file).readlines()
 except FileNotFoundError:
     print('File with urls not found')
     sys.exit()
 
 
-def save_to_dir(image, url_index):
+def save_to_dir(image, ind):
     file_path = str(args.dir)
     Path(file_path).mkdir(parents=True, exist_ok=True)
-    file_name = f'{url_index}.jpeg'
+    file_name = f'{ind}.jpeg'
     new_file_path = os.path.join(file_path, file_name)
     image.save(new_file_path, 'JPEG')
 
 
-def pillow_handle_and_save(content, size, url_index):
+def pillow_handle_and_save(content, size, index):
     global errors_counter
     try:
         with Image.open(BytesIO(content)) as im:
             im.thumbnail(size)
             im.show()
-            save_to_dir(im, url_index)
+            save_to_dir(im, index)
     except UnidentifiedImageError:
-        print(f'The image on the url №{url_index} was not identified')
+        print(f'The image on the url №{index} was not identified')
         errors_counter += 1
     except IOError:
         print('Cannot create thumbnail for', str(args.dir))
         errors_counter += 1
 
 
-def parse_image(url_file):
+def parse_image(url: str):
     global errors_counter
-    with open(url_file) as file:
-        file_list = file.readlines()
-        for url in file_list:
-            url_index = file_list.index(url)
-            response = requests.get(url)
-            if response.status_code == 200:
-                pillow_handle_and_save(response.content, image_size, url_index)
-            else:
-                print(url_index, '-', response)
-                errors_counter += 1
+    global index_counter
+    response = requests.get(url)
+    index_counter += 1
+    if response.status_code == 200:
+        pillow_handle_and_save(response.content, image_size, index_counter)
+    else:
+        print(index_counter, '-', response)
+        errors_counter += 1
 
 
-def do_parse_image():
+def do_parse_image(urls_for_parsing: list):
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.threads) as executor:
-        executor.map(parse_image(args.file))
+        executor.map(parse_image, urls_for_parsing)
 
 
 if __name__ == '__main__':
     start_time = time.perf_counter()
     # print(parse_image(args.file))
-    do_parse_image()
+    do_parse_image(urls_for_parsing=urls)
     print(f'The number of errors: {errors_counter}')
     print(f'The number of downloaded files:'
           f' {len([f for f in os.listdir(args.dir)])}')
