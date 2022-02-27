@@ -2,6 +2,7 @@ import argparse
 import os
 import requests
 import sys
+import time
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
 from pathlib import Path
@@ -67,5 +68,12 @@ def parse_image(url_file):
                 errors_counter += 1
 
 
+start_time = time.perf_counter()
 print(parse_image(args.file))
 print(f'The number of errors: {errors_counter}')
+print(f'The number of downloaded files:'
+      f' {len([f for f in os.listdir(args.dir)])}')
+print(f'The size of the folder with downloaded files:'
+      f' {sum([os.path.getsize(os.path.join(str(args.dir), f)) for f in os.listdir(args.dir)])}')
+duration = time.perf_counter() - start_time
+print(f'Finished in {duration} seconds')
