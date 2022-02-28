@@ -14,7 +14,7 @@ errors_counter = 0
 
 parser = argparse.ArgumentParser(description='Give entry parameters')
 
-# python download.py urllist.txt --dir=thumbnails/ --threads=4 --size=128x128
+# python main.py urllist.txt --dir=:C/et_cetera/ --threads=4 --size=1000x1000
 parser.add_argument('file')
 parser.add_argument('--dir', default='os.getcwd()')
 parser.add_argument('--threads', type=int, default=1)
@@ -26,6 +26,7 @@ image_size = tuple([int(i) for i in args.size.split('x')])
 
 
 try:
+    """Check if input file with urls exists else raise FileNotFoundError"""
     with open(args.file) as f:
         print('Found file')
         urls = open(args.file).readlines()
@@ -34,7 +35,11 @@ except FileNotFoundError:
     sys.exit()
 
 
-def save_to_dir(image, ind):
+def save_to_dir(image, ind: int):
+    """
+    Save an image to the directory, given as a parameter.
+    If the directory doesn't exist, create it.
+    """
     file_path = str(args.dir)
     Path(file_path).mkdir(parents=True, exist_ok=True)
     file_name = f'{ind}.jpeg'
@@ -42,7 +47,8 @@ def save_to_dir(image, ind):
     image.save(new_file_path, 'JPEG')
 
 
-def pillow_handle_and_save(content, size, index):
+def pillow_handle_and_save(content, size: tuple, index: int):
+    """Open response.content, make thumbnail's preview, handle 2 exceptions"""
     global errors_counter
     try:
         with Image.open(BytesIO(content)) as im:
@@ -58,6 +64,7 @@ def pillow_handle_and_save(content, size, index):
 
 
 def parse_image(url: str):
+    """Check every url's validity"""
     global errors_counter
     global index_counter
     response = requests.get(url)
@@ -76,7 +83,6 @@ def do_parse_image(urls_for_parsing: list):
 
 if __name__ == '__main__':
     start_time = time.perf_counter()
-    # print(parse_image(args.file))
     do_parse_image(urls_for_parsing=urls)
     print(f'The number of errors: {errors_counter}')
     print(f'The number of downloaded files:'
