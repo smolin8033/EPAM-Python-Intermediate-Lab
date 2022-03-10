@@ -3,6 +3,7 @@
 import argparse
 import concurrent.futures
 import os
+import queue
 import requests
 import sys
 import time
@@ -26,12 +27,15 @@ parser.add_argument('--size', type=str, default='100x100')
 args = parser.parse_args()
 image_size = tuple([int(i) for i in args.size.split('x')])
 
+q = queue.Queue()
 
 try:
     """Check if input file with urls exists else raise FileNotFoundError"""
     with open(args.file) as f:
         print('Found file')
-        urls = f.read().split('\n')
+        urls = f.read().split('\n')[:-1]
+        for line in urls:
+            q.put(line)
 except FileNotFoundError:
     print('File with urls not found')
     sys.exit()
@@ -78,14 +82,19 @@ def parse_image(url: str):
         errors_counter += 1
 
 
-def do_parse_image(urls_for_parsing: list):
+def do_parse_image():
+    """
+    The process is infinite and I can kill it only in task manager,
+    while q.empty() is False or while not q.empty() don't help.
+    'None' doesn't seem to work here. .get(timeout=nseconds) doesn't work here.
+    """
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.threads) as executor:
-        executor.map(parse_image, urls_for_parsing)
+        executor.map(parse_image, iter(q.get(), None))
 
 
 if __name__ == '__main__':
     start_time = time.perf_counter()
-    do_parse_image(urls_for_parsing=urls)
+    do_parse_image()
     print(f'The number of errors: {errors_counter}')
     print(f'The number of downloaded files:'
           f' {len([f for f in os.listdir(args.dir)])}')
