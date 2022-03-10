@@ -1,3 +1,5 @@
+# python main.py urllist.txt --dir=:C/et_cetera/ --threads=4 --size=1000x1000
+
 import argparse
 import concurrent.futures
 import os
@@ -14,7 +16,7 @@ errors_counter = 0
 
 parser = argparse.ArgumentParser(description='Give entry parameters')
 
-# python main.py urllist.txt --dir=:C/et_cetera/ --threads=4 --size=1000x1000
+
 parser.add_argument('file')
 parser.add_argument('--dir', default='os.getcwd()')
 parser.add_argument('--threads', type=int, default=1)
@@ -29,7 +31,7 @@ try:
     """Check if input file with urls exists else raise FileNotFoundError"""
     with open(args.file) as f:
         print('Found file')
-        urls = open(args.file).readlines()
+        urls = f.read().split('\n')
 except FileNotFoundError:
     print('File with urls not found')
     sys.exit()
@@ -72,7 +74,7 @@ def parse_image(url: str):
     if response.status_code == 200:
         pillow_handle_and_save(response.content, image_size, index_counter)
     else:
-        print(index_counter, '-', response)
+        print(url, '-', response)
         errors_counter += 1
 
 
