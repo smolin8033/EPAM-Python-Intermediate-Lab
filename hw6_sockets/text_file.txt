@@ -1,0 +1,6 @@
+save
+save once more
+save several times
+Current time: 16:28:28, value: 9016
+Current time: 16:29:28, value: 854
+Current time: 16:30:28, value: 4355
