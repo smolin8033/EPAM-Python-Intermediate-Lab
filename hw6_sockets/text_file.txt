@@ -1,6 +1,1 @@
-save
-save once more
-save several times
-Current time: 16:28:28, value: 9016
-Current time: 16:29:28, value: 854
-Current time: 16:30:28, value: 4355
+Current time: 22:53:35, random value: 1974, % CPU: 3.7, Temperature: 42.0°C, CPU Core #4: 46.0°C, CPU Core #5: 47.0°C, CPU Core #1: 47.0°C, CPU Core #6: 47.0°C, CPU Package: 48.0°C, GPU Core: 46.000003814697266°C, CPU Core #2: 47.0°C, CPU Core #3: 45.0°C
