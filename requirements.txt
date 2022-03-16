@@ -4,3 +4,5 @@ isort==5.10.1
 coverage==6.3.1
 line-profiler==3.4.0
 memory-profiler 0.60.0
+requests==2.27.1
+Pillow==9.0.1
