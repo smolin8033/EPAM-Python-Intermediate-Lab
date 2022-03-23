@@ -4,7 +4,7 @@ import sys
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-sock.bind(('192.168.0.10', 9999))
+sock.bind(('localhost', 9999))
 sock.listen(5)
 
 

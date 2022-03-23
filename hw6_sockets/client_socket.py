@@ -1,12 +1,15 @@
-import psutil
+"""Requires  https://openhardwaremonitor.org/ to be downloaded and launched to run"""
+
 import random
 import socket
 import time
-import wmi
 from datetime import datetime
 
+import psutil
+import wmi
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect(('192.168.0.10', 9999))
+sock.connect(('localhost', 9999))
 w = wmi.WMI(namespace='root/OpenHardwareMonitor')
 
 
@@ -22,4 +25,7 @@ try:
         print(response.decode('utf-8'))
         time.sleep(60)
 except KeyboardInterrupt:
+    sock.close()
+except ConnectionResetError:
+    print('An existing connection was forcibly closed by the remote host')
     sock.close()

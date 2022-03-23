@@ -1,6 +1,6 @@
 
-from memory_profiler import profile
 import numpy as np
+from memory_profiler import profile
 
 my_arr = [22, 55, 77, 34, 65, 23, 76, 45, 323, 76]
 
