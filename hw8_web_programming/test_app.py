@@ -9,7 +9,6 @@ response = requests.get('http://localhost:5000/api/recipes/1')
 print(response.status_code)
 
 sample = {
-    # 'id': request.json['id'] or RECIPES[-1]['id'] + 1,
     'meal': 'Lasagna',
     'description': 'Really delicious',
     'ingredients': 'Potatoes, cheese, tomatoes',
