@@ -2,9 +2,8 @@ import argparse
 import datetime
 import os
 import stat
-from pwd import getpwuid
 from grp import getgrgid
-
+from pwd import getpwuid
 
 DESCRIPTION = '''This is a prototype of "ls" Linux command.'''
 EPILOG = '(c) Alexander Smolin 2022'

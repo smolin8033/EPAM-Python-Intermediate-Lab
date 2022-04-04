@@ -1,6 +1,6 @@
 import pytest
 
-from hw2_testing.main import my_range, my_cache, my_sum, no_params
+from hw2_testing.main import my_cache, my_range, my_sum, no_params
 
 
 def test_my_range_no_parameters():
